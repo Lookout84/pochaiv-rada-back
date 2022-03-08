@@ -1,0 +1,20 @@
+[
+    {
+        "id": "6488d7e7-e73a-4a8b-b9d4-d982de789b74",
+        "author": "admin",
+        "name": "News1",
+        "text": "",
+        "data": "",
+        "icon": "",
+        "isFavorite": true
+    },
+    {
+        "id": "2395aff5-f77d-4cfa-909f-68770a0af524",
+        "author": "admin",
+        "name": "News2",
+        "text": "",
+        "data": "",
+        "icon": "",
+        "isFavorite": false
+    }
+]
