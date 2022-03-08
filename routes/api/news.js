@@ -34,7 +34,7 @@ router.get('/:id', async (req, res, next) => {
     }
 })
 
-router.post('/', validationCreateCat, async (req, res, next) => {
+router.post('/', validationCreateNews, async (req, res, next) => {
     try {
         const itemNews = await News.create(req.body)
         return res.status(201).json({ status: 'success', code: 201, data: { itemNews } })
@@ -55,7 +55,7 @@ router.delete('/:id', async (req, res, next) => {
     }
 })
 
-router.put('/:id', validationUpdateCat, async (req, res, next) => {
+router.put('/:id', validationUpdateNews, async (req, res, next) => {
     try {
         const itemNews = await News.update(req.params.id, req.body)
         if (cat) {
@@ -69,7 +69,7 @@ router.put('/:id', validationUpdateCat, async (req, res, next) => {
 
 router.patch(
     '/:id/favorited',
-    validationUpdateStatusCat,
+    validationUpdateStatusNews,
     async (req, res, next) => {
         try {
             const itemNews = await News.update(req.params.id, req.body)

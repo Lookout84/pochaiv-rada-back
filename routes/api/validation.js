@@ -4,7 +4,7 @@ const schemaCreateNews = Joi.object({
     author: Joi.string().alphanum().min(3).max(30).required(),
     name: Joi.string().alphanum().min(3).max(30).required(),
     text: Joi.string().alphanum().min(3).required(),
-    data: Joi.data(),
+    data: Joi.date(),
     icon: Joi.string().alphanum().min(3).max(100).required(),
     isFavorite: Joi.boolean().optional(),
 })
@@ -13,7 +13,7 @@ const schemaUpdateNews = Joi.object({
     author: Joi.string().alphanum().min(3).max(30).required(),
     name: Joi.string().alphanum().min(3).max(30).required(),
     text: Joi.string().alphanum().min(3).required(),
-    data: Joi.data(),
+    data: Joi.date(),
     icon: Joi.string().alphanum().min(3).max(100).required(),
     isFavorite: Joi.boolean().optional(),
 }).or('author', 'name', 'text', 'data', 'icon', 'isFavorite')
