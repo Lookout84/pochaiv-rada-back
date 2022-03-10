@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const News = require('../../model/news')
+const ctrl = require('../../controllers/news')
 const {
     validationCreateNews,
     validationUpdateNews,
@@ -12,75 +12,15 @@ router.use((req, res, next) => {
     next()
 })
 
-router.get('/', async (req, res, next) => {
-    console.log('Hi')
-    try {
-        const news = await News.getAll()
-        return res.json({ status: 'success', code: 200, data: { news } })
-    } catch (e) {
-        next(e)
-    }
-})
+router
+    .get('/', ctrl.getAll)
+    .post('/', validationCreateNews, ctrl.create)
 
-router.get('/:id', async (req, res, next) => {
-    try {
-        const itemNews = await Cats.getById(req.params.id)
-        if (cat) {
-            return res.json({ status: 'success', code: 200, data: { itemNews } })
-        }
-        return res.json({ status: 'error', code: 404, message: 'Not found' })
-    } catch (e) {
-        next(e)
-    }
-})
+router
+    .get('/:id', ctrl.getById)
+    .delete('/:id', ctrl.remove)
+    .put('/:id', validationUpdateNews, ctrl.update)
 
-router.post('/', validationCreateNews, async (req, res, next) => {
-    try {
-        const itemNews = await News.create(req.body)
-        return res.status(201).json({ status: 'success', code: 201, data: { itemNews } })
-    } catch (e) {
-        next(e)
-    }
-})
-
-router.delete('/:id', async (req, res, next) => {
-    try {
-        const itemNews = await News.remove(req.params.id)
-        if (itemNews) {
-            return res.json({ status: 'success', code: 200, data: { itemNews } })
-        }
-        return res.json({ status: 'error', code: 404, message: 'Not found' })
-    } catch (e) {
-        next(e)
-    }
-})
-
-router.put('/:id', validationUpdateNews, async (req, res, next) => {
-    try {
-        const itemNews = await News.update(req.params.id, req.body)
-        if (cat) {
-            return res.json({ status: 'success', code: 200, data: { itemNews } })
-        }
-        return res.json({ status: 'error', code: 404, message: 'Not found' })
-    } catch (e) {
-        next(e)
-    }
-})
-
-router.patch(
-    '/:id/favorited',
-    validationUpdateStatusNews,
-    async (req, res, next) => {
-        try {
-            const itemNews = await News.update(req.params.id, req.body)
-            if (cat) {
-                return res.json({ status: 'success', code: 200, data: { itemNewsNews } })
-            }
-            return res.json({ status: 'error', code: 404, message: 'Not found' })
-        } catch (e) {
-            next(e)
-        }
-    },
-)
+router.patch('/:id/favorited', validationUpdateStatusNews, ctrl.update)
 
 module.exports = router

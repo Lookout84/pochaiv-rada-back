@@ -3,10 +3,10 @@ require('dotenv').config()
 const uriDb = process.env.URI_DB
 
 const db = mongoose.connect(uriDb, {
+    autoIndex: false,
     useNewUrlParser: true,
     useUnifiedTopology: true,
     maxPoolSize: 10,
-    autoIndex: false
 })
 
 mongoose.connection.on('connected', () => {

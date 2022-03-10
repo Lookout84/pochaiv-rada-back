@@ -1,4 +1,4 @@
-const Article = require('./article')
+const Article = require('../model/article')
 
 const getAll = async () => {
   const results = await Article.find()
@@ -27,6 +27,7 @@ const update = async (id, body) => {
     { new: true })
   return result
 }
+
 
 module.exports = {
   getAll,
