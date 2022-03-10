@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const News = require('../../model')
+const News = require('../../model/news')
 const {
     validationCreateNews,
     validationUpdateNews,
