@@ -2,7 +2,7 @@ const express = require('express')
 const logger = require('morgan')
 const cors = require('cors')
 
-const newsRouter = require('./routes/api/news')
+const newsRouter = require('./src/routes/api/articles')
 
 const app = express()
 

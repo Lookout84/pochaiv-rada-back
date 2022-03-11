@@ -1,4 +1,4 @@
-const News = require('../repositories/news')
+const News = require('../repositories/articles')
 
 const getAll = async (req, res, next) => {
     console.log('Hi')

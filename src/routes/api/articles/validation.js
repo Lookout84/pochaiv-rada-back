@@ -1,4 +1,5 @@
 const Joi = require('joi')
+const mongoose = require('mongoose')
 
 const schemaCreateNews = Joi.object({
     author: Joi.string().alphanum().min(3).max(30).required(),
@@ -43,5 +44,13 @@ module.exports = {
     },
     validationUpdateStatusNews: (req, res, next) => {
         return validate(schemaUpdateStatusNews, req.body, next)
+    },
+    validateMongoId: (req, res, next) => {
+        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+            next({
+                status: 400,
+                message: 'Invalid ObjectId',
+            })
+        } next()
     },
 }
