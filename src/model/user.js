@@ -1,5 +1,9 @@
 const { Schema, model } = require('mongoose')
-const { isEmail } = require("validator");
+const { isEmail } = require("validator")
+const bcrypt = require("bcryptjs")
+const gravatar = require("gravatar")
+
+const SALT_WORK_FACTOR = 8
 
 const userSchema = new Schema(
     {
@@ -23,6 +27,7 @@ const userSchema = new Schema(
             lowercase: true,
             validate: [isEmail, "Please fill a valid email address"],
         },
+        roles: [{ type: String, ref: 'Role' }],
         token: { type: String, default: null },
         avatarURL: {
             type: String,

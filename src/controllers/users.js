@@ -1,13 +1,14 @@
-const Users = require("../repositories/users");
-const { HttpCode } = require("../helpers/constants");
-const jwt = require("jsonwebtoken");
-require("dotenv").config();
+const Users = require('../repositories/users')
+const { HttpCode } = require('../helpers/constants')
+const jwt = require('jsonwebtoken')
+require('dotenv').config();
+const Role = require('../model/role')
 
 const SECRET_KEY = process.env.SECRET_KEY
 
 const register = async (req, res, next) => {
   try {
-    const userEmail = await Users.findByEmail(req.body.email);
+    const userEmail = await Users.findByEmail(req.body.email)
     if (userEmail) {
       return res.status(HttpCode.CONFLICT).json({
         status: "error",
@@ -15,17 +16,21 @@ const register = async (req, res, next) => {
         message: "Provided email already exists",
       });
     }
-
-    const { id, name, email, avatarURL } = await Users.create(
+    // const userRole = await Role.findOne({ value: 'User' })
+    // console.log(userRole.value);
+    const { id, name, email, avatarURL, roles } = await Users.create(
       req.body
     );
-    const payload = { id };
+    // const { value } = userRole
+    const { value } = roles
+    // console.log(value);
+    const payload = { id, value };
     const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "24h" });
     await Users.updateToken(id, token);
     return res.status(HttpCode.CREATED).json({
       status: "success",
       code: HttpCode.CREATED,
-      user: { id, name, email, avatarURL, token },
+      user: { id, name, email, avatarURL, token, roles },
     });
   } catch (error) {
     next(error);
@@ -44,11 +49,14 @@ const login = async (req, res, next) => {
       });
     }
     const id = user.id;
-    const { email, name, avatarURL } = user;
-    const payload = { id };
+    console.log(user);
+    const { email, name, avatarURL, roles } = user;
+    const value = user.roles
+    console.log({ value });
+    const payload = { id, roles: [roles.value] };
     const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "24h" });
     await Users.updateToken(id, token);
-    return res.json({ status: "OK", code: HttpCode.OK, data: { token, id, email, name, avatarURL } });
+    return res.json({ status: "OK", code: HttpCode.OK, data: { token, id, email, name, avatarURL, roles: [roles.value] } });
   } catch (error) {
     next(error);
   }
@@ -67,11 +75,11 @@ const logout = async (req, res, next) => {
 const currentUser = async (req, res, next) => {
   try {
     const id = req.user.id;
-    const { name, email, avatarURL } = await Users.findById(id);
+    const { name, email, avatarURL, roles } = await Users.findById(id);
     return res.status(HttpCode.OK).json({
       status: "OK",
       code: HttpCode.OK,
-      user: { name, email, avatarURL },
+      user: { name, email, avatarURL, roles },
     });
   } catch (error) {
     next(error);

@@ -1,12 +1,14 @@
 const express = require('express')
 const router = express.Router()
-const ctrl = require('../../controllers/articles')
+const ctrl = require('../../../controllers/articles')
+const guard = require("../../../helpers/guard")
+
 const {
     validationCreateNews,
     validationUpdateNews,
     validationUpdateStatusNews,
     validateMongoId
-} = require('../users/validation')
+} = require('./validation')
 
 router.use((req, res, next) => {
     console.log(req.url)
@@ -14,14 +16,14 @@ router.use((req, res, next) => {
 })
 
 router
-    .get('/', ctrl.getAll)
-    .post('/', validationCreateNews, ctrl.create)
+    .get('/', guard, ctrl.getAll)
+    .post('/', guard, validationCreateNews, ctrl.create)
 
 router
-    .get('/:id', validateMongoId, ctrl.getById)
-    .delete('/:id', validateMongoId, ctrl.remove)
-    .put('/:id', validateMongoId, validationUpdateNews, ctrl.update)
+    .get('/:id', guard, validateMongoId, ctrl.getById)
+    .delete('/:id', guard, validateMongoId, ctrl.remove)
+    .put('/:id', guard, validateMongoId, validationUpdateNews, ctrl.update)
 
-router.patch('/:id/favorited', validateMongoId, validationUpdateStatusNews, ctrl.update)
+router.patch('/:id/favorited', guard, validateMongoId, validationUpdateStatusNews, ctrl.update)
 
 module.exports = router
