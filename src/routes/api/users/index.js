@@ -7,11 +7,12 @@ const {
   validationCreateUser,
   validationLoginUser,
 } = require("./validation")
+const roleMiddleware = require('../../../helpers/roleMiddleware')
 
 router.post("/register", validationCreateUser, ctrl.register)
 router.post("/login", validationLoginUser, ctrl.login)
 router.post("/logout", guard, ctrl.logout)
-router.get("/getUserData", guard, ctrl.currentUser)
+router.get("/user", guard, roleMiddleware, ctrl.currentUser)
 
 
 module.exports = router

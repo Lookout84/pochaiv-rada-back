@@ -16,21 +16,19 @@ const register = async (req, res, next) => {
         message: "Provided email already exists",
       });
     }
-    // const userRole = await Role.findOne({ value: 'User' })
-    // console.log(userRole.value);
-    const { id, name, email, avatarURL, roles } = await Users.create(
-      req.body
+    const userRole = await Role.findOne({ value: 'User' })
+    const { value } = userRole
+    const body = req.body
+    const { id, name, email, avatarURL } = await Users.create(
+      { ...body, roles: [value] }
     );
-    // const { value } = userRole
-    const { value } = roles
-    // console.log(value);
     const payload = { id, value };
     const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "24h" });
     await Users.updateToken(id, token);
     return res.status(HttpCode.CREATED).json({
       status: "success",
       code: HttpCode.CREATED,
-      user: { id, name, email, avatarURL, token, roles },
+      user: { id, name, email, avatarURL, token, roles: [value] },
     });
   } catch (error) {
     next(error);
@@ -53,10 +51,10 @@ const login = async (req, res, next) => {
     const { email, name, avatarURL, roles } = user;
     const value = user.roles
     console.log({ value });
-    const payload = { id, roles: [roles.value] };
+    const payload = { id, value };
     const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "24h" });
     await Users.updateToken(id, token);
-    return res.json({ status: "OK", code: HttpCode.OK, data: { token, id, email, name, avatarURL, roles: [roles.value] } });
+    return res.json({ status: "OK", code: HttpCode.OK, data: { token, id, email, name, avatarURL, roles } });
   } catch (error) {
     next(error);
   }

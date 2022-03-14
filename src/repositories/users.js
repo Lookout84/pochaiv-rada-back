@@ -1,5 +1,4 @@
-const User = require("../model/user")
-const Role = require('../model/role')
+const User = require('../model/user')
 
 const findById = async (id) => {
     return await User.findById(id)
@@ -13,9 +12,8 @@ const findByEmail = async (email) => {
     return await User.findOne({ email })
 }
 
-const create = async (body, roles) => {
-    roles = await Role.findOne({ value: 'User' })
-    const user = new User({ body, roles: [roles.value] })
+const create = async (body) => {
+    const user = new User(body)
     return await user.save()
 }
 
