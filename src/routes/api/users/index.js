@@ -12,7 +12,7 @@ const roleMiddleware = require('../../../helpers/roleMiddleware')
 router.post("/register", validationCreateUser, ctrl.register)
 router.post("/login", validationLoginUser, ctrl.login)
 router.post("/logout", guard, ctrl.logout)
-router.get("/user", guard, roleMiddleware, ctrl.currentUser)
+router.get("/users", guard, roleMiddleware(['Admin']), ctrl.currentUser)
 
 
 module.exports = router
