@@ -4,9 +4,6 @@
   "description": "",
   "main": ".eslintrc.js",
   "dependencies": {
-    "@adminjs/express": "^4.1.0",
-    "@adminjs/mongoose": "^2.0.2",
-    "adminjs": "^5.7.3",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",

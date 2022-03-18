@@ -6,6 +6,6 @@ const roleSchema = new Schema({
     }
 })
 
-const Role = model("role", roleSchema);
+const Role = model("role", roleSchema)
 
-module.exports = Role;
+module.exports = Role

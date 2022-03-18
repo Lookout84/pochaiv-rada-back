@@ -2,22 +2,22 @@ const Joi = require('joi')
 const mongoose = require('mongoose')
 
 const schemaCreateNews = Joi.object({
-    author: Joi.string().alphanum().min(3).max(30).required(),
-    name: Joi.string().alphanum().min(3).max(30).required(),
-    text: Joi.string().alphanum().min(3).required(),
+    title: Joi.string().min(3).max(30).required(),
+    author: Joi.string().min(3).max(30).required(),
+    body: Joi.string().min(3).required(),
     data: Joi.date(),
-    icon: Joi.string().alphanum().min(3).max(100).required(),
+    icon: Joi.string().min(3).max(100).required(),
     isFavorite: Joi.boolean().optional(),
 })
 
 const schemaUpdateNews = Joi.object({
-    author: Joi.string().alphanum().min(3).max(30).required(),
-    name: Joi.string().alphanum().min(3).max(30).required(),
-    text: Joi.string().alphanum().min(3).required(),
+    title: Joi.string().min(3).max(30).required(),
+    author: Joi.string().min(3).max(30).required(),
+    body: Joi.string().min(3).required(),
     data: Joi.date(),
-    icon: Joi.string().alphanum().min(3).max(100).required(),
+    icon: Joi.string().min(3).max(100).required(),
     isFavorite: Joi.boolean().optional(),
-}).or('author', 'name', 'text', 'data', 'icon', 'isFavorite')
+}).or('title', 'author', 'text', 'data', 'icon', 'isFavorite')
 
 const schemaUpdateStatusNews = Joi.object({
     isFavorite: Joi.boolean().required(),

@@ -8,7 +8,14 @@ const articleSchema = new Schema({
     },
     author: String,
     body: String,
-    comments: [{ body: String, date: Date }],
+    comments: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Comment'
+    }],
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: 'user'
+    },
     date: { type: Date, default: Date.now },
     hidden: Boolean,
     isFavorite: {

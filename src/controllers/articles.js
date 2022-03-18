@@ -1,18 +1,57 @@
-const News = require('../repositories/articles')
+const Article = require('../repositories/articles')
+const { HttpCode } = require('../helpers/constants')
 
 const getAll = async (req, res, next) => {
-    console.log('Hi')
     try {
-        const news = await News.getAll()
-        return res.json({ status: 'success', code: 200, data: { news } })
-    } catch (e) {
-        next(e)
+        const userId = req.user.id;
+        const { docs: articles, ...rest } = await Article.getAllArticles(
+            userId
+        )
+        console.log(articles);
+        articles.sort(function (a, b) {
+            return new Date(b.date).getTime() - new Date(a.date).getTime()
+        })
+        return res.json({
+            status: 'success',
+            code: HttpCode.OK,
+            data: { articles, ...rest },
+        });
+    } catch (error) {
+        next(error)
+    }
+}
+
+const create = async (req, res, next) => {
+    try {
+        const userId = req.user.id
+        console.log(req.body)
+        const article = await Article.addArticle(userId, req.body)
+        console.log(article.title)
+        if (article) {
+            const articles = await Article.getAllArticles(userId)
+            articles.sort(function (a, b) {
+                return new Date(b.date).getTime() - new Date(a.date).getTime()
+            })
+            return res
+                .status(HttpCode.CREATED)
+                .json({
+                    status: 'success', code: HttpCode.CREATED, ...articles
+                })
+        }
+        console.log(aricles);
+        return res.status(HttpCode.BAD_REQUEST).json({
+            status: 'error',
+            code: HttpCode.BAD_REQUEST,
+            message: 'missing required name field',
+        });
+    } catch (error) {
+        next(error)
     }
 }
 
 const getById = async (req, res, next) => {
     try {
-        const itemNews = await Cats.getById(req.params.id)
+        const itemNews = await Article.getById(req.params.id)
         if (cat) {
             return res.json({ status: 'success', code: 200, data: { itemNews } })
         }
@@ -22,18 +61,10 @@ const getById = async (req, res, next) => {
     }
 }
 
-const create = async (req, res, next) => {
-    try {
-        const itemNews = await News.create(req.body)
-        return res.status(201).json({ status: 'success', code: 201, data: { itemNews } })
-    } catch (e) {
-        next(e)
-    }
-}
 
 const remove = async (req, res, next) => {
     try {
-        const itemNews = await News.remove(req.params.id)
+        const itemNews = await Article.remove(req.params.id)
         if (itemNews) {
             return res.json({ status: 'success', code: 200, data: { itemNews } })
         }
@@ -45,7 +76,7 @@ const remove = async (req, res, next) => {
 
 const update = async (req, res, next) => {
     try {
-        const itemNews = await News.update(req.params.id, req.body)
+        const itemNews = await Article.update(req.params.id, req.body)
         if (itemNews) {
             return res.json({ status: 'success', code: 200, data: { itemNews } })
         }
