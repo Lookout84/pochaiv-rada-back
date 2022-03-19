@@ -3,8 +3,8 @@ const { Schema, model } = require('mongoose')
 const articleSchema = new Schema({
     title: {
         type: String,
-        min: 5,
-        max: 255,
+        min: 3,
+        max: 30,
     },
     author: String,
     body: String,

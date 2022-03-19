@@ -27,11 +27,11 @@ const remove = async (id) => {
   return result
 }
 
-const addArticle = async (userId, body) => {
-  const result = await Article.create({
-    owner: userId,
-    body,
-  })
+const addArticle = async (body) => {
+  console.log(body);
+  const result = await Article.create(
+    body
+  )
   return result
 }
 
