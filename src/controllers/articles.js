@@ -3,8 +3,9 @@ const { HttpCode } = require('../helpers/constants')
 
 const getAll = async (req, res, next) => {
     try {
-        // const userId = req.user.id;
-        const { articles } = await Article.getAll()
+        const userId = req.user.id;
+        console.log(userId);
+        const { articles, total, limit, offset } = await Article.getAll(userId, req.query)
         console.log(articles);
         articles.sort(function (a, b) {
             return new Date(b.date).getTime() - new Date(a.date).getTime()
@@ -12,23 +13,24 @@ const getAll = async (req, res, next) => {
         return res.json({
             status: 'success',
             code: HttpCode.OK,
-            data: { articles, ...rest },
+            data: { articles, total, limit, offset },
         });
     } catch (error) {
         next(error)
     }
 }
 
+
 const create = async (req, res, next) => {
     try {
-        const article = await Article.addArticle(req.body)
-        console.log(article.title)
+        const userId = req.user.id;
+        const article = await Article.addArticle(userId, req.body)
         if (article) {
-            const articles = await Article.getAll()
+            const articles = await Article.getAll(userId, req.query)
+            console.log(articles)
             articles.sort(function (a, b) {
                 return new Date(b.date).getTime() - new Date(a.date).getTime()
             })
-            console.log(articles);
             return res
                 .status(HttpCode.CREATED)
                 .json({

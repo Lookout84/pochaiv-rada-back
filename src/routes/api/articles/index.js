@@ -1,13 +1,12 @@
 const express = require('express')
 const router = express.Router()
 const ctrl = require('../../../controllers/articles')
-const guard = require("../../../helpers/guard")
+const guard = require('../../../helpers/guard')
 
 const {
-    validationCreateNews,
-    validationUpdateNews,
-    validationUpdateStatusNews,
-    validateMongoId
+    validationCreateArticle,
+    validationUpdateArticles,
+    validationUpdateStatusArticles
 } = require('./validation')
 
 router.use((req, res, next) => {
@@ -17,13 +16,15 @@ router.use((req, res, next) => {
 
 router
     .get('/', guard, ctrl.getAll)
-    .post('/', guard, validationCreateNews, ctrl.create)
+    .post('/', guard, validationCreateArticle, ctrl.create)
 
 router
-    .get('/:id', guard, validateMongoId, ctrl.getById)
-    .delete('/:id', guard, validateMongoId, ctrl.remove)
-    .put('/:id', guard, validateMongoId, validationUpdateNews, ctrl.update)
+    .get('/:id', guard, ctrl.getById)
+    .delete('/:id', guard, ctrl.remove)
+    .put('/:id', guard, validationUpdateArticles, ctrl.update)
+// router
+//     .get('/articles', ctrl.getAllArticles)
 
-router.patch('/:id/favorited', guard, validateMongoId, validationUpdateStatusNews, ctrl.update)
+router.patch('/:id/favorited', guard, validationUpdateStatusArticles, ctrl.update)
 
 module.exports = router

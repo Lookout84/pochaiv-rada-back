@@ -1,9 +1,9 @@
 const app = require('../app')
-const db = require('../src/model/db')
+const db = require('../models')
 
 const PORT = process.env.PORT || 3000
 
-db.then(() => {
+db.sequelize.authenticate().then(() => {
   app.listen(PORT, () => {
     console.log(`Server running. Use our API on port: ${PORT}`)
   })

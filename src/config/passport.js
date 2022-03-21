@@ -11,7 +11,8 @@ opts.secretOrKey = SECRET_KEY;
 passport.use(
   new JwtStrategy(opts, async (payload, done) => {
     try {
-      const user = await Users.findById(payload.id);
+      const { id } = payload
+      const user = await Users.findById(id);
       if (!user) {
         return done(new Error("User not found"));
       }

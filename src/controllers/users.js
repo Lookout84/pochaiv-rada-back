@@ -1,8 +1,9 @@
 const Users = require('../repositories/users')
 const { HttpCode } = require('../helpers/constants')
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs')
 require('dotenv').config();
-const Role = require('../model/role')
+const { Role } = require('../../models')
 
 const SECRET_KEY = process.env.SECRET_KEY
 
@@ -20,7 +21,7 @@ const register = async (req, res, next) => {
     const { value } = userRole
     const body = req.body
     const { id, name, email, avatarURL } = await Users.create(
-      { ...body, roles: [value] }
+      { ...body, role: [value] }
     );
     const payload = { id, value };
     const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "24h" });
@@ -28,7 +29,7 @@ const register = async (req, res, next) => {
     return res.status(HttpCode.CREATED).json({
       status: "success",
       code: HttpCode.CREATED,
-      user: { id, name, email, avatarURL, token, roles: [value] },
+      user: { id, name, email, avatarURL, token, role: [value] },
     });
   } catch (error) {
     next(error);
@@ -38,7 +39,7 @@ const register = async (req, res, next) => {
 const login = async (req, res, next) => {
   try {
     const user = await Users.findByEmail(req.body.email);
-    const isValidPassword = await user?.isValidPassword(req.body.password);
+    const isValidPassword = await bcrypt.compare(req.body.password, user.password);
     if (!user || !isValidPassword) {
       return res.status(HttpCode.UNAUTHORIZED).json({
         status: "error",
@@ -48,13 +49,12 @@ const login = async (req, res, next) => {
     }
     const id = user.id;
     console.log(user);
-    const { email, name, avatarURL, roles } = user;
-    const value = user.roles
-    console.log({ value });
+    const { email, name, avatarURL, role } = user;
+    const { value } = await Role.findOne({ where: { id: role } })
     const payload = { id, value };
     const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "24h" });
     await Users.updateToken(id, token);
-    return res.json({ status: "OK", code: HttpCode.OK, data: { token, id, email, name, avatarURL, roles } });
+    return res.json({ status: "OK", code: HttpCode.OK, data: { token, id, email, name, avatarURL, role: [value] } });
   } catch (error) {
     next(error);
   }
@@ -73,11 +73,11 @@ const logout = async (req, res, next) => {
 const currentUser = async (req, res, next) => {
   try {
     const id = req.user.id;
-    const { name, email, avatarURL, roles } = await Users.findById(id);
+    const { name, email, avatarURL, role } = await Users.findById(id);
     return res.status(HttpCode.OK).json({
       status: "OK",
       code: HttpCode.OK,
-      user: { name, email, avatarURL, roles },
+      user: { name, email, avatarURL, role },
     });
   } catch (error) {
     next(error);

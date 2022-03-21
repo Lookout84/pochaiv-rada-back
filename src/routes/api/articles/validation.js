@@ -1,25 +1,24 @@
 const Joi = require('joi')
-const mongoose = require('mongoose')
 
-const schemaCreateNews = Joi.object({
+const schemaCreateArticle = Joi.object({
     title: Joi.string().min(3).max(30).required(),
-    author: Joi.string().min(3).max(30).required(),
+    // author: Joi.string().min(3).max(30).required(),
     body: Joi.string().min(3).required(),
     date: Joi.date(),
-    icon: Joi.string().min(3).max(100).required(),
+    // icon: Joi.string().min(3).max(100).required(),
     isFavorite: Joi.boolean().optional(),
 })
 
-const schemaUpdateNews = Joi.object({
+const schemaUpdateArticles = Joi.object({
     title: Joi.string().min(3).max(30).required(),
-    author: Joi.string().min(3).max(30).required(),
+    // author: Joi.string().min(3).max(30).required(),
     body: Joi.string().min(3).required(),
     date: Joi.date(),
-    icon: Joi.string().min(3).max(100).required(),
+    // icon: Joi.string().min(3).max(100).required(),
     isFavorite: Joi.boolean().optional(),
 }).or('title', 'author', 'body', 'date', 'icon', 'isFavorite')
 
-const schemaUpdateStatusNews = Joi.object({
+const schemaUpdateStatusArticle = Joi.object({
     isFavorite: Joi.boolean().required(),
 })
 
@@ -36,21 +35,13 @@ const validate = async (schema, obj, next) => {
 }
 
 module.exports = {
-    validationCreateNews: (req, res, next) => {
-        return validate(schemaCreateNews, req.body, next)
+    validationCreateArticle: (req, res, next) => {
+        return validate(schemaCreateArticle, req.body, next)
     },
-    validationUpdateNews: (req, res, next) => {
-        return validate(schemaUpdateNews, req.body, next)
+    validationUpdateArticles: (req, res, next) => {
+        return validate(schemaUpdateArticles, req.body, next)
     },
-    validationUpdateStatusNews: (req, res, next) => {
-        return validate(schemaUpdateStatusNews, req.body, next)
-    },
-    validateMongoId: (req, res, next) => {
-        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-            next({
-                status: 400,
-                message: 'Invalid ObjectId',
-            })
-        } next()
-    },
+    validationUpdateStatusArticles: (req, res, next) => {
+        return validate(schemaUpdateStatusArticle, req.body, next)
+    }
 }

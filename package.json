@@ -9,18 +9,19 @@
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
-    "express-formidable": "^1.2.0",
     "express-query-boolean": "^2.0.0",
     "express-rate-limit": "^6.3.0",
     "gravatar": "^1.8.2",
     "helmet": "^5.0.2",
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.2.5",
+    "mariadb": "^3.0.0",
     "morgan": "^1.10.0",
+    "mysql2": "^2.3.3",
     "nodemon": "^2.0.15",
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
+    "sequelize": "^6.17.0",
     "uuid": "^8.3.2",
     "validator": "^13.7.0"
   },
@@ -40,5 +41,8 @@
   "bugs": {
     "url": "https://github.com/Lookout84/pochaiv-rada-back/issues"
   },
-  "homepage": "https://github.com/Lookout84/pochaiv-rada-back#readme"
+  "homepage": "https://github.com/Lookout84/pochaiv-rada-back#readme",
+  "devDependencies": {
+    "sequelize-cli": "^6.4.1"
+  }
 }
