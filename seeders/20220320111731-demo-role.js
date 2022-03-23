@@ -1,5 +1,5 @@
 'use strict';
-const { Role } = require('../../src/helpers/constants')
+const { Role } = require('../src/helpers/constants')
 module.exports = {
   async up(queryInterface, Sequelize) {
     /**

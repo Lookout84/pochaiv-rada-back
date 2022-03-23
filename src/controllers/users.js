@@ -18,6 +18,7 @@ const register = async (req, res, next) => {
       });
     }
     const userRole = await Role.findOne({ value: 'User' })
+    console.log(userRole)
     const { value } = userRole
     const body = req.body
     const { id, name, email, avatarURL } = await Users.create(
@@ -48,7 +49,6 @@ const login = async (req, res, next) => {
       });
     }
     const id = user.id;
-    console.log(user);
     const { email, name, avatarURL, role } = user;
     const { value } = await Role.findOne({ where: { id: role } })
     const payload = { id, value };

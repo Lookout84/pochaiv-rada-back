@@ -3,30 +3,39 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Article extends Model {
+  class Session extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Article.belongsTo(models.User, {
+      Session.hasOne(models.Author, {
         foreignKey: 'author',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE'
       })
+      models.Author.belongsTo(Session)
+
+      Session.hasOne(models.Type, {
+        foreignKey: 'type',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+      })
+      models.Type.belongsTo(Session)
     }
   }
-  Article.init({
-    title: DataTypes.STRING,
+  Session.init({
+    name: DataTypes.STRING,
+    text: DataTypes.STRING,
     author: DataTypes.INTEGER,
-    body: DataTypes.STRING,
+    type: DataTypes.INTEGER,
     date: DataTypes.DATE,
-    hidden: { type: DataTypes.BOOLEAN, default: 1 },
-    isFavorite: { type: DataTypes.BOOLEAN, default: 0 }
+    numberSession: DataTypes.INTEGER,
+    file: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'Article',
+    modelName: 'Session',
   });
-  return Article;
+  return Session;
 };
