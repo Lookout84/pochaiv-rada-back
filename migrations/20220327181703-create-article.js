@@ -12,25 +12,11 @@ module.exports = {
         type: Sequelize.STRING
       },
       author: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Users',
-          key: 'id'
-        }
+        type: Sequelize.INTEGER
       },
       body: {
         type: Sequelize.STRING
       },
-<<<<<<< Updated upstream:migrations/20220319235708-create-article.js
-=======
-      comments: {
-        type: Sequelize.OBJECT,
-        references: {
-          model: 'Comments',
-          key: 'id'
-        }
-      },
->>>>>>> Stashed changes:models/migrations/20220319235708-create-article.js
       date: {
         type: Sequelize.DATE
       },

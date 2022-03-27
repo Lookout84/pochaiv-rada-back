@@ -29,6 +29,11 @@ const Role = {
     USER: 'User'
 }
 
+const Variation = {
+    PROJECT: 'Проект',
+    SOLUTION: 'Рішення'
+}
+
 const Author = {
     NAME1: 'Сергій Максимчук',
     NAME2: 'Андрій Чубик',
@@ -49,5 +54,6 @@ module.exports = {
     HttpCode,
     limiterAPI,
     Role,
-    Author
+    Author,
+    Variation,
 };

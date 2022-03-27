@@ -10,26 +10,23 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Session.hasOne(models.Author, {
+      Executive.belongsTo(models.Author, {
         foreignKey: 'author',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE'
       })
-      models.Author.belongsTo(Session)
-
-      Session.hasOne(models.Type, {
-        foreignKey: 'type',
+      Executive.belongsTo(models.Variation, {
+        foreignKey: 'variation',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE'
       })
-      models.Type.belongsTo(Session)
     }
   }
   Session.init({
     name: DataTypes.STRING,
     text: DataTypes.STRING,
     author: DataTypes.INTEGER,
-    type: DataTypes.INTEGER,
+    variation: DataTypes.INTEGER,
     date: DataTypes.DATE,
     numberSession: DataTypes.INTEGER,
     file: DataTypes.STRING

@@ -15,8 +15,8 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE'
       })
-      Executive.belongsTo(models.Type, {
-        foreignKey: 'type',
+      Executive.belongsTo(models.Variation, {
+        foreignKey: 'variation',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE'
       })
@@ -26,9 +26,9 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     text: DataTypes.STRING,
     author: DataTypes.INTEGER,
-    type: DataTypes.INTEGER,
+    variation: DataTypes.INTEGER,
     date: DataTypes.DATE,
-    numberExecutive: DataTypes.INTEGER,
+    numberSession: DataTypes.INTEGER,
     file: DataTypes.STRING
   }, {
     sequelize,
