@@ -10,12 +10,12 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Executive.belongsTo(models.Author, {
+      Session.belongsTo(models.Author, {
         foreignKey: 'author',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE'
       })
-      Executive.belongsTo(models.Variation, {
+      Session.belongsTo(models.Variation, {
         foreignKey: 'variation',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE'
